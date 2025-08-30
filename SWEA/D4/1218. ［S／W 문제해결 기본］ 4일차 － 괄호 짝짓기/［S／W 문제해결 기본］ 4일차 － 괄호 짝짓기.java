@@ -1,8 +1,5 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.io.FileInputStream;
-import java.util.Stack;
 
 class Solution
 {
@@ -10,57 +7,49 @@ class Solution
 	{
 		
 		Scanner sc = new Scanner(System.in);
-		// 괄호 짝 연결
-		Map<Character, Character> map = new HashMap<>();
-		map.put(')', '(');
-		map.put('}', '{');
-		map.put(']', '[');
-		map.put('>', '<');
+
 		for(int test_case = 1; test_case <= 10; test_case++)
 		{
-			// 입력
-			// 괄호 길이
-			int length = sc.nextInt();
-			// 괄호 문자열
-			String str = sc.next();
-			// 여는 괄호 담을 스택
-			Stack<Character> stack = new Stack<>();
-			// 괄호 로직 성공 여부
-			boolean isValid = true;
+            // 입력
+            // 괄호의 길이 입력 받기
+            int N = sc.nextInt();
+            // 괄호 String 받기
+            String str = sc.next();
 
-			// 로직
-			// 문자열 순회
-			for (int i = 0; i < str.length(); i++) {
-				// 괄호 문자
-				char c = str.charAt(i);
-				// 여는 괄호인 경우 stack에 push
-				if (c == '(' || c == '{' || c == '[' || c == '<') {
-					stack.push(c);
-				}
-				// 닫는 괄호인 경우 일단 stack이 비었는지 확인
-				else {
-					// stack이 비었으면 검증 실패, 반복문 탈출
-					if (stack.isEmpty()) {
-						isValid = false;
-						break;
-					}
-					// stack이 비어있지 않다면 pop() 후 값 저장
-					char pop = stack.pop();
-					// 꺼낸 괄호와 현재 가지고 있는 괄호가 일치하는지 검증
-					if (pop != map.get(c)) {
-						isValid = false;
-						break;
-					}
-				}
-			} // for 순회 반복문
+            // 로직
+            // 스택을 사용해 여는 괄호는 스택에 집어넣고, 닫는 괄호를 만나면 스택을 확인해 빼내는 작업을 한다.
+            // 괄호의 종류가 4개라 코드의 가독성을 위해 Map을 사용해볼까 한다.
+            Map<Character, Character> map = new HashMap<>();
+            map.put(')', '(');
+            map.put(']', '[');
+            map.put('}', '{');
+            map.put('>', '<');
 
-			// 출력
-			// stack이 비었는지 와 검증에 오류가 없는지 동시에 확인 후 결과 출력
-			if (stack.isEmpty() && isValid) {
-				System.out.println("#" + test_case + " " + 1);
-			} else {
-				System.out.println("#" + test_case + " " + 0);
-			}
+            // 괄호를 담기 위한 stack
+            Deque<Character> stack = new ArrayDeque<>();
+
+            // 괄호 유효성을 확인하기 위한 for문 과 boolean
+            boolean isOK = true;
+            for (int i = 0; i < N; i++) {
+                char ch = str.charAt(i);
+                // key가 아닌 괄호 즉, 여는 괄호면!
+                if (!map.containsKey(ch)) {
+                    stack.push(ch);
+                } // 스택이 비어있지 않으면서, 닫는 괄호인 ch와 stack이 연결된 관계면
+                else if (!stack.isEmpty() && map.get(ch) == stack.peek()) {
+                    stack.pop();
+                } else {
+                    isOK = false;
+                    break;
+                }
+            }
+
+            // 출력
+            if(isOK){
+                System.out.println("#" + test_case + " " + 1);
+            } else {
+                System.out.println("#" + test_case + " " + 0);
+            }
 
 		}
 	}
