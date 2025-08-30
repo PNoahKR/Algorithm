@@ -45,7 +45,7 @@ class Solution
             }
 
             // 출력
-            if(isOK){
+            if(isOK && stack.isEmpty()){
                 System.out.println("#" + test_case + " " + 1);
             } else {
                 System.out.println("#" + test_case + " " + 0);
