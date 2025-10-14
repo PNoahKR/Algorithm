@@ -40,7 +40,6 @@ public class Main {
 					sb.append("YES").append("\n");
 				else
 					sb.append("NO").append("\n");
-					
 				break;
 			default:
 				break;
@@ -52,7 +51,7 @@ public class Main {
 
 	private static int find(int x) {
 		if(x == parent[x]) return x;
-		return find(parent[x]);
+		return parent[x] = find(parent[x]);
 
 	}
 
