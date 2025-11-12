@@ -1,35 +1,31 @@
-import java.util.Scanner;
-import java.io.FileInputStream;
- 
-class Solution
-{
-    public static void main(String args[]) throws Exception
-    {
-        Scanner sc = new Scanner(System.in);
-        int T;
-        T=sc.nextInt();
- 
-        for(int test_case = 1; test_case <= T; test_case++)
-        {
-            // 입력
-            // 마지막부터 N개의 비트 수 
-            int N = sc.nextInt();
-            // 이진수로 표현할 M
-            int M = sc.nextInt();
-            // 로직
-            // 1. 짝수면 OFF
-            if(M % 2 == 0) {
-                System.out.println("#" + test_case + " OFF");
-                continue;
-            }
-             
-            int mask = (1 << N) - 1;
-             
-            if((M & mask) == mask) {
-                System.out.println("#" + test_case + " ON");                
-            } else {                
-                System.out.println("#" + test_case + " OFF");               
-            }
-        }
-    }
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Solution {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int t = Integer.parseInt(br.readLine());
+		for (int test_case = 1; test_case <= t; test_case++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int N = Integer.parseInt(st.nextToken());
+			int M = Integer.parseInt(st.nextToken());
+			
+			String binary = Integer.toBinaryString(M);
+			char[] ch = binary.toCharArray();
+			
+			boolean isOk = true;
+			
+			for (int i = ch.length - N; i < ch.length; i++) {
+				if(i < 0 || ch[i] == '0') {
+					System.out.println("#" + test_case + " " + "OFF");
+					isOk = false;
+					break;
+				}		
+			}
+			
+			if(isOk) System.out.println("#" + test_case + " " + "ON");
+		}
+	}
 }
