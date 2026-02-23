@@ -1,12 +1,14 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
     static int N, M;
-    static int[] count = new int[10001]; // 카운팅 배열
+    static int[] arr;
     static int[] result;
+    static boolean[] visited;
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
@@ -15,19 +17,25 @@ public class Main {
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
+
+        arr = new int[N];
         result = new int[M];
+        visited = new boolean[N];
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            count[Integer.parseInt(st.nextToken())]++;
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
+        Arrays.sort(arr);
+
         dfs(0);
+        
         System.out.println(sb);
     }
 
-    private static void dfs(int depth) {
-
+    static void dfs(int depth) {
+        // M개를 모두 골랐으면 출력
         if (depth == M) {
             for (int val : result) {
                 sb.append(val).append(" ");
@@ -36,14 +44,16 @@ public class Main {
             return;
         }
 
-        // 1부터 10000까지 탐색
-        for (int i = 1; i <= 10000; i++) {
-            
-            if (count[i] > 0) {
-                count[i]--;
-                result[depth] = i;
+        int prev = -1;
+
+        for (int i = 0; i < N; i++) {
+
+            if (!visited[i] && prev != arr[i]) {
+                visited[i] = true;
+                result[depth] = arr[i];
+                prev = arr[i];
                 dfs(depth + 1);
-                count[i]++;
+                visited[i] = false;
             }
         }
     }
